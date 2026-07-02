@@ -533,19 +533,21 @@
     knop.disabled = true;
     knop.textContent = 'Bezig…';
 
-    const res = await postAction({ action: 'reserve', itemId: currentReserveItem.ID, naam, aantal });
-
-    knop.disabled = false;
-    knop.textContent = oorspronkelijkeTekst;
-    if (res.success) {
-      localStorage.setItem('kostuum_leerkracht', naam);
-      items = res.items;
-      populateFilters();
-      render();
-      document.getElementById('reserveOverlay').classList.remove('open');
-      showToast('Gereserveerd voor ' + naam + '.');
-    } else {
-      showToast(res.error, true);
+    try {
+      const res = await postAction({ action: 'reserve', itemId: currentReserveItem.ID, naam, aantal });
+      if (res.success) {
+        localStorage.setItem('kostuum_leerkracht', naam);
+        items = res.items;
+        populateFilters();
+        render();
+        document.getElementById('reserveOverlay').classList.remove('open');
+        showToast('Gereserveerd voor ' + naam + '.');
+      } else {
+        showToast(res.error, true);
+      }
+    } finally {
+      knop.disabled = false;
+      knop.textContent = oorspronkelijkeTekst;
     }
   });
 
