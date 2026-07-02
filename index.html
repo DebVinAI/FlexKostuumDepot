@@ -78,7 +78,37 @@
     color: var(--ink);
     flex-shrink: 0;
   }
-  .rail input[type="search"] { min-width: 160px; flex: 1; }
+
+  /* Beheerder-blokje linksboven */
+  #adminBox {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 60;
+    background: var(--card);
+    border: 1.5px solid var(--ink);
+    border-radius: 8px;
+    padding: 7px 10px;
+    box-shadow: 3px 4px 0 rgba(0,0,0,0.35);
+  }
+  #adminBox button {
+    background: none; border: none; color: var(--ink);
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    font-weight: 600; letter-spacing: 0.02em;
+    text-decoration: none; cursor: pointer;
+  }
+  #adminBox button:hover { color: var(--accent); }
+
+  header { text-align: center; }
+  header .logo {
+    display: block;
+    max-width: 120px;
+    height: auto;
+    margin: 0 auto 14px;
+    background: #fff;
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
 
   main { padding: 20px 16px 60px; max-width: 1100px; margin: 0 auto; }
 
@@ -187,15 +217,6 @@
   .empty { text-align: center; padding: 60px 20px; color: var(--fg-soft); }
 
   /* Admin */
-  .admin-toggle {
-    text-align: center; padding: 30px 0 10px;
-  }
-  .admin-toggle button {
-    background: none; border: none; color: var(--fg-soft);
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    text-decoration: underline; cursor: pointer;
-  }
-  .admin-toggle button:hover { color: var(--accent); }
   .admin-panel {
     background: var(--card);
     border: 1.5px solid var(--danger);
@@ -235,6 +256,19 @@
     margin-left: 8px;
     vertical-align: middle;
   }
+  .res-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 13px;
+  }
+  .res-row:last-child { border-bottom: none; }
+  .res-row .res-info strong { display: block; font-size: 13.5px; }
+  .res-row .res-info span { color: var(--ink-soft); font-size: 12.5px; }
+  .res-row button {
+    flex-shrink: 0; padding: 6px 14px; border-radius: 16px; font-size: 12px;
+    border: 1.5px solid var(--ink); background: var(--card); color: var(--ink); cursor: pointer;
+  }
+  .res-row button:hover { background: var(--ink); color: #fff; }
+  .res-empty { font-size: 13px; color: var(--ink-soft); padding: 6px 0; }
 
   /* Modal */
   .overlay {
@@ -290,33 +324,35 @@
 </head>
 <body>
 
+<div id="adminBox">
+  <button id="adminToggleBtn" type="button">Beheerder aanmelden</button>
+</div>
+
 <header>
-  <p class="eyebrow">Dansschool · Voorraad achter de schermen</p>
+  <img src="logo.jpg" alt="FLEX Dansschool Ninove - Denderhoutem" class="logo">
+  <p class="eyebrow">Flex · Voorraad achter de schermen</p>
   <h1>Kostuumdepot</h1>
-  <p class="sub">Bekijk wat er in de garagebox zit, filter op type of kleur, en reserveer voor de volgende show.</p>
+  <p class="sub">Bekijk wat er in de garagebox zit, filter op type, kleur of maat, en reserveer voor de volgende show.</p>
 </header>
 
 <div class="rail">
   <select id="filterType"><option value="">Alle types</option></select>
   <select id="filterKleur"><option value="">Alle kleuren</option></select>
   <select id="filterMaat"><option value="">Alle maten</option></select>
-  <input type="search" id="searchBox" placeholder="Zoek op naam…">
 </div>
 
 <main>
   <div id="grid" class="grid"></div>
   <div id="emptyState" class="empty" style="display:none;">Geen items gevonden met deze filters.</div>
 
-  <div class="admin-toggle">
-    <button id="adminToggleBtn" type="button">Beheerder aanmelden</button>
-  </div>
-
   <div id="adminPanel" class="admin-panel" style="display:none;">
-    <h2>Overzicht reservaties <span class="admin-badge">beheerder</span></h2>
-    <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Alle openstaande reservaties, gesorteerd op naam van de leerkracht.</p>
-    <button type="button" class="btn secondary" id="printOverviewBtn">Overzicht afdrukken</button>
+    <h2>Openstaande reservaties <span class="admin-badge">beheerder</span></h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Breng een specifieke reservatie afzonderlijk terug, of druk het volledige overzicht af.</p>
+    <div id="adminReservationsList"></div>
+    <button type="button" class="btn secondary" id="printOverviewBtn" style="margin-top:12px;">Overzicht afdrukken</button>
 
     <h2 style="margin-top:24px;">Nieuw item toevoegen</h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Plak bij foto gerust gewoon de gewone Drive-deellink — die wordt automatisch omgezet naar de juiste vorm.</p>
     <form id="addItemForm">
       <input type="text" name="naam" placeholder="Naam (bv. Zwarte broek jazz)" required>
       <input type="text" name="type" placeholder="Type (bv. Broek)" required>
@@ -360,7 +396,7 @@
 <script>
   // ==== CONFIGURATIE ====
   // Plak hier de webapp-URL die je krijgt na het implementeren van Code.gs
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxK4yIK3zK5VMlIKrDgm2zd9GfkU3SdAsmvkHwVtT8jExWd6_e_uBFm7WmJOGlJ67OuiQ/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwrJpAIXenP1d4XSbH5eGRpwOi7kLKtMig9Gyv5rru3YA4w_YacrkUqY5bt6pLgDLVm/exec';
 
   let items = [];
   let teachers = [];
@@ -372,22 +408,43 @@
   const filterType = document.getElementById('filterType');
   const filterKleur = document.getElementById('filterKleur');
   const filterMaat = document.getElementById('filterMaat');
-  const searchBox = document.getElementById('searchBox');
 
   async function loadItems() {
+    // Toon meteen de laatst gekende lijst (indien aanwezig) terwijl er op de achtergrond ververst wordt
+    const cachedRaw = localStorage.getItem('kostuum_items_cache');
+    let hadCache = false;
+    if (cachedRaw) {
+      try {
+        const cached = JSON.parse(cachedRaw);
+        items = cached.items || [];
+        teachers = cached.teachers || [];
+        hadCache = true;
+        populateFilters();
+        populateTeachers();
+        render();
+      } catch (e) { /* corrupte cache negeren */ }
+    }
+    if (!hadCache) {
+      emptyState.style.display = 'block';
+      emptyState.textContent = 'Bezig met laden…';
+    }
+
     try {
       const res = await fetch(API_URL + '?action=list');
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
       items = data.items;
       teachers = data.teachers || [];
+      localStorage.setItem('kostuum_items_cache', JSON.stringify({ items, teachers }));
       populateFilters();
       populateTeachers();
       render();
     } catch (err) {
-      grid.innerHTML = '';
-      emptyState.style.display = 'block';
-      emptyState.textContent = 'Kon de voorraad niet laden. Controleer de API-verbinding. (' + err.message + ')';
+      if (!hadCache) {
+        grid.innerHTML = '';
+        emptyState.style.display = 'block';
+        emptyState.textContent = 'Kon de voorraad niet laden. Controleer de API-verbinding. (' + err.message + ')';
+      }
     }
   }
 
@@ -411,13 +468,11 @@
     const typeVal = filterType.value;
     const kleurVal = filterKleur.value;
     const maatVal = filterMaat.value;
-    const searchVal = searchBox.value.trim().toLowerCase();
 
     const filtered = items.filter(i => {
       if (typeVal && i.Type !== typeVal) return false;
       if (kleurVal && i.Kleur !== kleurVal) return false;
       if (maatVal && i.Maat !== maatVal) return false;
-      if (searchVal && !String(i.Naam).toLowerCase().includes(searchVal)) return false;
       return true;
     });
 
@@ -457,7 +512,6 @@
   filterType.addEventListener('change', render);
   filterKleur.addEventListener('change', render);
   filterMaat.addEventListener('change', render);
-  searchBox.addEventListener('input', render);
 
   // ==== RESERVEREN ====
   function openReserve(itemId) {
@@ -504,16 +558,54 @@
     isAdmin = true;
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('adminToggleBtn').textContent = 'Beheerder afmelden';
+    loadAdminReservations();
     render();
   });
 
   async function adminReset(itemId) {
-    if (!confirm('Dit item volledig terug openzetten (alle reservaties wissen)?')) return;
+    if (!confirm('Dit item volledig terug openzetten (alle reservaties van dit item wissen)?')) return;
     const res = await postAction({ action: 'adminReset', itemId, password: window.__adminPassword });
     if (res.success) {
       items = res.items;
       render();
+      loadAdminReservations();
       showToast('Item terug volledig beschikbaar.');
+    } else {
+      showToast(res.error, true);
+    }
+  }
+
+  async function loadAdminReservations() {
+    const container = document.getElementById('adminReservationsList');
+    container.innerHTML = '<p class="res-empty">Bezig met laden…</p>';
+    const res = await postAction({ action: 'adminActiveReservations', password: window.__adminPassword });
+    if (!res.success) {
+      container.innerHTML = `<p class="res-empty">${res.error}</p>`;
+      return;
+    }
+    if (res.reservations.length === 0) {
+      container.innerHTML = '<p class="res-empty">Geen openstaande reservaties.</p>';
+      return;
+    }
+    container.innerHTML = res.reservations.map(r => `
+      <div class="res-row">
+        <div class="res-info">
+          <strong>${r.leerkracht}</strong>
+          <span>${r.aantal}× ${r.itemNaam} — sinds ${r.datum}</span>
+        </div>
+        <button type="button" onclick="returnOneReservation(${r.rij})">Terugbrengen</button>
+      </div>
+    `).join('');
+  }
+
+  async function returnOneReservation(rij) {
+    const res = await postAction({ action: 'adminReturnOne', rij, password: window.__adminPassword });
+    if (res.success) {
+      items = res.items;
+      populateFilters();
+      render();
+      loadAdminReservations();
+      showToast('Reservatie teruggebracht.');
     } else {
       showToast(res.error, true);
     }
@@ -530,7 +622,7 @@
       kleur: form.kleur.value,
       maat: form.maat.value,
       totaalAantal: form.totaalAantal.value,
-      fotoURL: form.fotoURL.value,
+      fotoURL: normalizeDriveUrl(form.fotoURL.value),
       beschrijving: form.beschrijving.value
     };
     const res = await postAction(payload);
@@ -544,6 +636,23 @@
       showToast(res.error, true);
     }
   });
+
+  // Zet een Google Drive-deellink (of een kaal bestands-ID) automatisch om naar de
+  // werkende weergavelink, zodat altijd de betrouwbare methode gebruikt wordt.
+  function normalizeDriveUrl(input) {
+    if (!input) return '';
+    const trimmed = input.trim();
+    if (/drive\.google\.com\/thumbnail\?id=/.test(trimmed)) return trimmed;
+    let match = trimmed.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
+    if (!match) match = trimmed.match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
+    if (!match) {
+      if (/^[a-zA-Z0-9_-]{15,}$/.test(trimmed)) {
+        return `https://drive.google.com/thumbnail?id=${trimmed}&sz=w600`;
+      }
+      return trimmed; // geen Drive-link herkend: ongewijzigd gebruiken (bv. andere fotohost)
+    }
+    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w600`;
+  }
 
   document.getElementById('printOverviewBtn').addEventListener('click', printOverview);
 
