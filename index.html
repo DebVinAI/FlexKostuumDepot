@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kostuumdepot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0c;
+    --card: #ffffff;
+    --ink: #141414;
+    --ink-soft: #6b6259;
+    --fg: #ffffff;
+    --fg-soft: #b0aaa2;
+    --accent: #ff2d6a;
+    --danger: #d1233f;
+    --line: #e3ddd3;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,255,255,0.025) 80px);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    padding: 28px 20px 18px;
+    border-bottom: 3px solid var(--accent);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 4px;
+  }
+  h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 40px);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .sub {
+    color: var(--fg-soft);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  /* Filter rail */
+  .rail {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+  }
+  .rail select, .rail input {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    padding: 9px 12px;
+    border: 1.5px solid var(--ink);
+    border-radius: 20px;
+    background: var(--card);
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .rail input[type="search"] { min-width: 160px; flex: 1; }
+
+  main { padding: 20px 16px 60px; max-width: 1100px; margin: 0 auto; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 26px;
+    margin-top: 10px;
+  }
+
+  .tag {
+    background: var(--card);
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    padding: 14px 14px 16px;
+    position: relative;
+    transform: rotate(-0.6deg);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 3px 4px 0 rgba(42,37,33,0.08);
+  }
+  .tag:nth-child(even) { transform: rotate(0.6deg); }
+  .tag:hover { transform: rotate(0deg) translateY(-3px); box-shadow: 5px 8px 0 rgba(42,37,33,0.12); }
+
+  .tag::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 12px; height: 12px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    background: var(--bg);
+  }
+  .tag-id {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    text-align: right;
+    margin-bottom: 4px;
+  }
+  .tag img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    margin: 6px 0 10px;
+    background: var(--line);
+  }
+  .tag .noimg {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    border: 1px dashed var(--ink-soft);
+    margin: 6px 0 10px;
+    color: var(--ink-soft);
+    font-size: 12px;
+    background: var(--line);
+  }
+  .tag h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 4px;
+  }
+  .meta {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .meta span:not(:last-child)::after { content: ' · '; }
+  .desc { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; min-height: 18px; }
+
+  .stock {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .stock.low { color: var(--danger); }
+
+  .btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1.5px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover { background: #fff; color: var(--accent); }
+  .btn:disabled {
+    background: var(--line); border-color: var(--line);
+    color: var(--ink-soft); cursor: not-allowed;
+  }
+  .btn.secondary { background: var(--card); color: var(--ink); border-color: var(--ink); }
+  .btn.secondary:hover { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--fg-soft); }
+
+  /* Admin */
+  .admin-toggle {
+    text-align: center; padding: 30px 0 10px;
+  }
+  .admin-toggle button {
+    background: none; border: none; color: var(--fg-soft);
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    text-decoration: underline; cursor: pointer;
+  }
+  .admin-toggle button:hover { color: var(--accent); }
+  .admin-panel {
+    background: var(--card);
+    border: 1.5px solid var(--danger);
+    border-radius: 8px;
+    padding: 18px;
+    margin: 20px 0;
+  }
+  .admin-panel h2 {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    color: var(--danger);
+    font-size: 16px;
+    margin-top: 0;
+  }
+  .admin-panel form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .admin-panel input {
+    font-family: 'Work Sans', sans-serif;
+    padding: 9px 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .admin-panel input.full { grid-column: 1 / -1; }
+  .admin-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    background: var(--danger);
+    color: #fff;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* Modal */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65);
+    align-items: center; justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 22px;
+    width: 100%; max-width: 340px;
+  }
+  .modal h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; margin-top: 0; }
+  .modal label { display: block; font-size: 13px; color: var(--ink-soft); margin: 12px 0 4px; }
+  .modal select, .modal input {
+    width: 100%; padding: 9px 10px; border: 1.5px solid var(--line);
+    border-radius: 6px; font-size: 14px; font-family: 'Work Sans', sans-serif;
+  }
+  .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+  .modal-actions .btn { flex: 1; }
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: #fff;
+    padding: 12px 20px; border-radius: 20px; font-size: 14px;
+    z-index: 200; opacity: 0; transition: opacity 0.2s ease;
+  }
+  .toast.show { opacity: 1; }
+  .toast.error { background: var(--danger); }
+
+  /* Afdrukoverzicht */
+  #printArea { display: none; }
+  #printArea h1 {
+    font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 22px; margin-bottom: 4px;
+  }
+  #printArea p { font-size: 12px; color: var(--ink-soft); margin-top: 0; }
+  #printTable { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px; }
+  #printTable th, #printTable td {
+    text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line);
+  }
+  #printTable th { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  #printTable tr.new-teacher td { border-top: 2px solid var(--ink); }
+
+  @media print {
+    body.printing > *:not(#printArea) { display: none !important; }
+    body.printing #printArea { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Dansschool · Voorraad achter de schermen</p>
+  <h1>Kostuumdepot</h1>
+  <p class="sub">Bekijk wat er in de garagebox zit, filter op type of kleur, en reserveer voor de volgende show.</p>
+</header>
+
+<div class="rail">
+  <select id="filterType"><option value="">Alle types</option></select>
+  <select id="filterKleur"><option value="">Alle kleuren</option></select>
+  <select id="filterMaat"><option value="">Alle maten</option></select>
+  <input type="search" id="searchBox" placeholder="Zoek op naam…">
+</div>
+
+<main>
+  <div id="grid" class="grid"></div>
+  <div id="emptyState" class="empty" style="display:none;">Geen items gevonden met deze filters.</div>
+
+  <div class="admin-toggle">
+    <button id="adminToggleBtn" type="button">Beheerder aanmelden</button>
+  </div>
+
+  <div id="adminPanel" class="admin-panel" style="display:none;">
+    <h2>Overzicht reservaties <span class="admin-badge">beheerder</span></h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Alle openstaande reservaties, gesorteerd op naam van de leerkracht.</p>
+    <button type="button" class="btn secondary" id="printOverviewBtn">Overzicht afdrukken</button>
+
+    <h2 style="margin-top:24px;">Nieuw item toevoegen</h2>
+    <form id="addItemForm">
+      <input type="text" name="naam" placeholder="Naam (bv. Zwarte broek jazz)" required>
+      <input type="text" name="type" placeholder="Type (bv. Broek)" required>
+      <input type="text" name="kleur" placeholder="Kleur (bv. Zwart)">
+      <input type="text" name="maat" placeholder="Maat (bv. M, 152, 42)">
+      <input type="number" name="totaalAantal" placeholder="Aantal" min="1" required>
+      <input type="text" name="fotoURL" placeholder="Link naar foto (Google Drive)" class="full">
+      <input type="text" name="beschrijving" placeholder="Korte beschrijving" class="full">
+      <button type="submit" class="btn full" style="grid-column:1/-1;">Item toevoegen</button>
+    </form>
+  </div>
+</main>
+
+<div id="printArea">
+  <h1 id="printTitle">Overzicht openstaande reservaties</h1>
+  <p id="printDate"></p>
+  <table id="printTable">
+    <thead>
+      <tr><th>Leerkracht</th><th>Item</th><th>Maat</th><th>Kleur</th><th>Type</th><th>Aantal</th><th>Sinds</th></tr>
+    </thead>
+    <tbody id="printTableBody"></tbody>
+  </table>
+</div>
+
+<div class="overlay" id="reserveOverlay">
+  <div class="modal">
+    <h3 id="reserveTitle">Reserveren</h3>
+    <label for="reserveTeacher">Jouw naam</label>
+    <select id="reserveTeacher"></select>
+    <label for="reserveAantal">Aantal</label>
+    <input type="number" id="reserveAantal" min="1" value="1">
+    <div class="modal-actions">
+      <button class="btn secondary" id="reserveCancel" type="button">Annuleren</button>
+      <button class="btn" id="reserveConfirm" type="button">Bevestigen</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ==== CONFIGURATIE ====
+  // Plak hier de webapp-URL die je krijgt na het implementeren van Code.gs
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxK4yIK3zK5VMlIKrDgm2zd9GfkU3SdAsmvkHwVtT8jExWd6_e_uBFm7WmJOGlJ67OuiQ/exec';
+
+  let items = [];
+  let teachers = [];
+  let isAdmin = false;
+  let currentReserveItem = null;
+
+  const grid = document.getElementById('grid');
+  const emptyState = document.getElementById('emptyState');
+  const filterType = document.getElementById('filterType');
+  const filterKleur = document.getElementById('filterKleur');
+  const filterMaat = document.getElementById('filterMaat');
+  const searchBox = document.getElementById('searchBox');
+
+  async function loadItems() {
+    try {
+      const res = await fetch(API_URL + '?action=list');
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      items = data.items;
+      teachers = data.teachers || [];
+      populateFilters();
+      populateTeachers();
+      render();
+    } catch (err) {
+      grid.innerHTML = '';
+      emptyState.style.display = 'block';
+      emptyState.textContent = 'Kon de voorraad niet laden. Controleer de API-verbinding. (' + err.message + ')';
+    }
+  }
+
+  function populateFilters() {
+    const types = [...new Set(items.map(i => i.Type).filter(Boolean))].sort();
+    const kleuren = [...new Set(items.map(i => i.Kleur).filter(Boolean))].sort();
+    const maten = [...new Set(items.map(i => i.Maat).filter(Boolean))].sort();
+    filterType.innerHTML = '<option value="">Alle types</option>' + types.map(t => `<option value="${t}">${t}</option>`).join('');
+    filterKleur.innerHTML = '<option value="">Alle kleuren</option>' + kleuren.map(k => `<option value="${k}">${k}</option>`).join('');
+    filterMaat.innerHTML = '<option value="">Alle maten</option>' + maten.map(m => `<option value="${m}">${m}</option>`).join('');
+  }
+
+  function populateTeachers() {
+    const select = document.getElementById('reserveTeacher');
+    select.innerHTML = teachers.map(t => `<option value="${t}">${t}</option>`).join('') || '<option value="">Geen leerkrachten ingesteld</option>';
+    const remembered = localStorage.getItem('kostuum_leerkracht');
+    if (remembered && teachers.includes(remembered)) select.value = remembered;
+  }
+
+  function render() {
+    const typeVal = filterType.value;
+    const kleurVal = filterKleur.value;
+    const maatVal = filterMaat.value;
+    const searchVal = searchBox.value.trim().toLowerCase();
+
+    const filtered = items.filter(i => {
+      if (typeVal && i.Type !== typeVal) return false;
+      if (kleurVal && i.Kleur !== kleurVal) return false;
+      if (maatVal && i.Maat !== maatVal) return false;
+      if (searchVal && !String(i.Naam).toLowerCase().includes(searchVal)) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      emptyState.style.display = 'block';
+      return;
+    }
+    emptyState.style.display = 'none';
+
+    grid.innerHTML = filtered.map(i => {
+      const beschikbaar = Number(i.BeschikbaarAantal);
+      const totaal = Number(i.TotaalAantal);
+      const laag = totaal > 0 && beschikbaar / totaal <= 0.2;
+      const uitverkocht = beschikbaar <= 0;
+      const imgHtml = i.FotoURL
+        ? `<img src="${i.FotoURL}" alt="${i.Naam}" loading="lazy">`
+        : `<div class="noimg">Geen foto</div>`;
+
+      return `
+        <div class="tag">
+          <div class="tag-id">${i.ID}</div>
+          ${imgHtml}
+          <h3>${i.Naam}</h3>
+          <div class="meta"><span>${i.Type || '—'}</span><span>${i.Kleur || '—'}</span>${i.Maat ? `<span>Maat ${i.Maat}</span>` : ''}</div>
+          ${i.Beschrijving ? `<div class="desc">${i.Beschrijving}</div>` : ''}
+          <div class="stock ${laag ? 'low' : ''}">${beschikbaar} van ${totaal} beschikbaar</div>
+          <button class="btn" ${uitverkocht ? 'disabled' : ''} onclick="openReserve('${i.ID}')">
+            ${uitverkocht ? 'Volledig gereserveerd' : 'Reserveren'}
+          </button>
+          ${isAdmin ? `<button class="btn danger" style="margin-top:8px;" onclick="adminReset('${i.ID}')">Volledig terug openzetten</button>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  filterType.addEventListener('change', render);
+  filterKleur.addEventListener('change', render);
+  filterMaat.addEventListener('change', render);
+  searchBox.addEventListener('input', render);
+
+  // ==== RESERVEREN ====
+  function openReserve(itemId) {
+    currentReserveItem = items.find(i => i.ID === itemId);
+    document.getElementById('reserveTitle').textContent = 'Reserveren — ' + currentReserveItem.Naam + (currentReserveItem.Maat ? ' (maat ' + currentReserveItem.Maat + ')' : '');
+    document.getElementById('reserveAantal').max = currentReserveItem.BeschikbaarAantal;
+    document.getElementById('reserveAantal').value = 1;
+    document.getElementById('reserveOverlay').classList.add('open');
+  }
+  document.getElementById('reserveCancel').addEventListener('click', () => {
+    document.getElementById('reserveOverlay').classList.remove('open');
+  });
+  document.getElementById('reserveConfirm').addEventListener('click', async () => {
+    const naam = document.getElementById('reserveTeacher').value;
+    const aantal = Number(document.getElementById('reserveAantal').value);
+    if (!naam) { showToast('Kies je naam.', true); return; }
+    if (!aantal || aantal < 1) { showToast('Vul een geldig aantal in.', true); return; }
+
+    const res = await postAction({ action: 'reserve', itemId: currentReserveItem.ID, naam, aantal });
+    if (res.success) {
+      localStorage.setItem('kostuum_leerkracht', naam);
+      items = res.items;
+      populateFilters();
+      render();
+      document.getElementById('reserveOverlay').classList.remove('open');
+      showToast('Gereserveerd voor ' + naam + '.');
+    } else {
+      showToast(res.error, true);
+    }
+  });
+
+  // ==== BEHEERDER ====
+  document.getElementById('adminToggleBtn').addEventListener('click', () => {
+    if (isAdmin) {
+      isAdmin = false;
+      document.getElementById('adminPanel').style.display = 'none';
+      document.getElementById('adminToggleBtn').textContent = 'Beheerder aanmelden';
+      render();
+      return;
+    }
+    const pw = prompt('Beheerderswachtwoord:');
+    if (pw === null) return;
+    window.__adminPassword = pw;
+    isAdmin = true;
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('adminToggleBtn').textContent = 'Beheerder afmelden';
+    render();
+  });
+
+  async function adminReset(itemId) {
+    if (!confirm('Dit item volledig terug openzetten (alle reservaties wissen)?')) return;
+    const res = await postAction({ action: 'adminReset', itemId, password: window.__adminPassword });
+    if (res.success) {
+      items = res.items;
+      render();
+      showToast('Item terug volledig beschikbaar.');
+    } else {
+      showToast(res.error, true);
+    }
+  }
+
+  document.getElementById('addItemForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const payload = {
+      action: 'adminAddItem',
+      password: window.__adminPassword,
+      naam: form.naam.value,
+      type: form.type.value,
+      kleur: form.kleur.value,
+      maat: form.maat.value,
+      totaalAantal: form.totaalAantal.value,
+      fotoURL: form.fotoURL.value,
+      beschrijving: form.beschrijving.value
+    };
+    const res = await postAction(payload);
+    if (res.success) {
+      items = res.items;
+      populateFilters();
+      render();
+      form.reset();
+      showToast('Item toegevoegd.');
+    } else {
+      showToast(res.error, true);
+    }
+  });
+
+  document.getElementById('printOverviewBtn').addEventListener('click', printOverview);
+
+  async function printOverview() {
+    const res = await postAction({ action: 'adminOverview', password: window.__adminPassword });
+    if (!res.success) { showToast(res.error, true); return; }
+
+    if (res.overview.length === 0) {
+      showToast('Er zijn momenteel geen openstaande reservaties.', true);
+      return;
+    }
+
+    document.getElementById('printDate').textContent = 'Afgedrukt op ' + new Date().toLocaleDateString('nl-BE');
+
+    let lastLeerkracht = null;
+    const rowsHtml = res.overview.map(r => {
+      const nieuweGroep = r.Leerkracht !== lastLeerkracht;
+      lastLeerkracht = r.Leerkracht;
+      return `
+        <tr class="${nieuweGroep ? 'new-teacher' : ''}">
+          <td>${nieuweGroep ? r.Leerkracht : ''}</td>
+          <td>${r.Item}</td>
+          <td>${r.Maat}</td>
+          <td>${r.Kleur}</td>
+          <td>${r.Type}</td>
+          <td>${r.Aantal}</td>
+          <td>${r.Datum}</td>
+        </tr>`;
+    }).join('');
+    document.getElementById('printTableBody').innerHTML = rowsHtml;
+
+    document.body.classList.add('printing');
+    window.print();
+  }
+
+  window.addEventListener('afterprint', () => {
+    document.body.classList.remove('printing');
+  });
+
+  // ==== HULPFUNCTIES ====
+  async function postAction(payload) {
+    try {
+      const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
+      return await res.json();
+    } catch (err) {
+      return { success: false, error: 'Verbindingsfout: ' + err.message };
+    }
+  }
+
+  function showToast(msg, isError) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast show' + (isError ? ' error' : '');
+    setTimeout(() => { toast.className = 'toast'; }, 3000);
+  }
+
+  loadItems();
+</script>
+</body>
+</html>
