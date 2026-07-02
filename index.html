@@ -79,12 +79,10 @@
     flex-shrink: 0;
   }
 
-  /* Beheerder-blokje linksboven */
+ /* Beheerder-blokje linksboven, scrolt gewoon mee weg met de pagina */
   #adminBox {
-    position: fixed;
-    top: 14px;
-    left: 14px;
-    z-index: 60;
+    display: inline-block;
+    margin: 14px 0 0 14px;
     background: var(--card);
     border: 1.5px solid var(--ink);
     border-radius: 8px;
@@ -396,7 +394,7 @@
 <script>
   // ==== CONFIGURATIE ====
   // Plak hier de webapp-URL die je krijgt na het implementeren van Code.gs
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwrJpAIXenP1d4XSbH5eGRpwOi7kLKtMig9Gyv5rru3YA4w_YacrkUqY5bt6pLgDLVm/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbz4Ur_FAdXm5clwTRzkx_EaUPqM5D7D62pVL4Qtf10yyydUO1LIi9cPqcsQqJ-rOMwd/exec';
 
   let items = [];
   let teachers = [];
@@ -530,7 +528,15 @@
     if (!naam) { showToast('Kies je naam.', true); return; }
     if (!aantal || aantal < 1) { showToast('Vul een geldig aantal in.', true); return; }
 
+    const knop = document.getElementById('reserveConfirm');
+    const oorspronkelijkeTekst = knop.textContent;
+    knop.disabled = true;
+    knop.textContent = 'Bezig…';
+
     const res = await postAction({ action: 'reserve', itemId: currentReserveItem.ID, naam, aantal });
+
+    knop.disabled = false;
+    knop.textContent = oorspronkelijkeTekst;
     if (res.success) {
       localStorage.setItem('kostuum_leerkracht', naam);
       items = res.items;
@@ -554,7 +560,7 @@
     }
     const pw = prompt('Beheerderswachtwoord:');
     if (pw === null) return;
-    window.__adminPassword = pw;
+    window.__adminPassword = pw.trim();
     isAdmin = true;
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('adminToggleBtn').textContent = 'Beheerder afmelden';
