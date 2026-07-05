@@ -28,186 +28,59 @@
     font-family: 'Work Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  header {
-    padding: 28px 20px 18px;
-    border-bottom: 3px solid var(--accent);
-    background: var(--bg);
-    color: var(--fg);
-  }
-  .eyebrow {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 0 0 4px;
-  }
-  h1 {
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: clamp(28px, 6vw, 40px);
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
-    margin: 0;
-  }
-  .sub {
-    color: var(--fg-soft);
-    font-size: 14px;
-    margin-top: 6px;
-  }
+  header { text-align: center; padding: 28px 20px 18px; border-bottom: 3px solid var(--accent); background: var(--bg); color: var(--fg); }
+  header .logo { display: block; max-width: 120px; height: auto; margin: 0 auto 14px; background: #fff; padding: 8px 10px; border-radius: 10px; }
+  .eyebrow { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 4px; }
+  h1 { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: clamp(28px, 6vw, 40px); letter-spacing: 0.01em; text-transform: uppercase; margin: 0; }
+  .sub { color: var(--fg-soft); font-size: 14px; margin-top: 6px; }
 
-  /* Filter rail */
-  .rail {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--bg);
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--line);
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-  }
-  .rail select, .rail input {
-    font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
-    padding: 9px 12px;
-    border: 1.5px solid var(--ink);
-    border-radius: 20px;
-    background: var(--card);
-    color: var(--ink);
-    flex-shrink: 0;
-  }
-
- /* Beheerder-blokje linksboven, scrolt gewoon mee weg met de pagina */
+  /* Beheerder-blokje, scrolt gewoon mee met de pagina */
   #adminBox {
-    display: inline-block;
-    margin: 14px 0 0 14px;
-    background: var(--card);
-    border: 1.5px solid var(--ink);
-    border-radius: 8px;
-    padding: 7px 10px;
-    box-shadow: 3px 4px 0 rgba(0,0,0,0.35);
+    display: inline-block; margin: 14px 0 0 14px;
+    background: var(--card); border: 1.5px solid var(--ink); border-radius: 8px;
+    padding: 7px 10px; box-shadow: 3px 4px 0 rgba(0,0,0,0.35);
   }
-  #adminBox button {
-    background: none; border: none; color: var(--ink);
-    font-family: 'Space Mono', monospace; font-size: 11px;
-    font-weight: 600; letter-spacing: 0.02em;
-    text-decoration: none; cursor: pointer;
-  }
+  #adminBox button { background: none; border: none; color: var(--ink); font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; cursor: pointer; }
   #adminBox button:hover { color: var(--accent); }
 
-  header { text-align: center; }
-  header .logo {
-    display: block;
-    max-width: 120px;
-    height: auto;
-    margin: 0 auto 14px;
-    background: #fff;
-    padding: 8px 10px;
-    border-radius: 10px;
+  /* Vestiging-schakelaar */
+  .vestiging-bar { display: flex; justify-content: center; gap: 0; padding: 16px; background: var(--bg); }
+  .vestiging-bar button {
+    font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 14px; letter-spacing: 0.02em;
+    padding: 10px 26px; border: 1.5px solid var(--accent); background: transparent; color: var(--fg-soft); cursor: pointer;
   }
+  .vestiging-bar button:first-child { border-radius: 20px 0 0 20px; }
+  .vestiging-bar button:last-child { border-radius: 0 20px 20px 0; border-left: none; }
+  .vestiging-bar button.active { background: var(--accent); color: #fff; }
+
+  /* Filter rail */
+  .rail { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 10px; overflow-x: auto; }
+  .rail select { font-family: 'Work Sans', sans-serif; font-size: 14px; padding: 9px 12px; border: 1.5px solid var(--ink); border-radius: 20px; background: var(--card); color: var(--ink); flex-shrink: 0; }
 
   main { padding: 20px 16px 60px; max-width: 1100px; margin: 0 auto; }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 26px;
-    margin-top: 10px;
-  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 26px; margin-top: 10px; }
 
-  .tag {
-    background: var(--card);
-    border: 1.5px solid var(--ink);
-    border-radius: 6px;
-    padding: 14px 14px 16px;
-    position: relative;
-    transform: rotate(-0.6deg);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 3px 4px 0 rgba(42,37,33,0.08);
-  }
+  .tag { background: var(--card); border: 1.5px solid var(--ink); border-radius: 6px; padding: 14px 14px 16px; position: relative; transform: rotate(-0.6deg); transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 3px 4px 0 rgba(42,37,33,0.08); }
   .tag:nth-child(even) { transform: rotate(0.6deg); }
   .tag:hover { transform: rotate(0deg) translateY(-3px); box-shadow: 5px 8px 0 rgba(42,37,33,0.12); }
-
-  .tag::before {
-    content: '';
-    position: absolute;
-    top: 10px; left: 10px;
-    width: 12px; height: 12px;
-    border: 1.5px solid var(--ink);
-    border-radius: 50%;
-    background: var(--bg);
-  }
-  .tag-id {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--ink-soft);
-    text-align: right;
-    margin-bottom: 4px;
-  }
-  .tag img {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
-    border-radius: 3px;
-    border: 1px solid var(--line);
-    margin: 6px 0 10px;
-    background: var(--line);
-  }
-  .tag .noimg {
-    width: 100%;
-    aspect-ratio: 4/3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 3px;
-    border: 1px dashed var(--ink-soft);
-    margin: 6px 0 10px;
-    color: var(--ink-soft);
-    font-size: 12px;
-    background: var(--line);
-  }
-  .tag h3 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 18px;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    margin: 0 0 4px;
-  }
-  .meta {
-    font-size: 12.5px;
-    color: var(--ink-soft);
-    margin-bottom: 8px;
-  }
+  .tag::before { content: ''; position: absolute; top: 10px; left: 10px; width: 12px; height: 12px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--bg); }
+  .tag-id { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--ink-soft); text-align: right; margin-bottom: 4px; }
+  .tag img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 3px; border: 1px solid var(--line); margin: 6px 0 10px; background: var(--line); }
+  .tag .noimg { width: 100%; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; border-radius: 3px; border: 1px dashed var(--ink-soft); margin: 6px 0 10px; color: var(--ink-soft); font-size: 12px; background: var(--line); }
+  .tag h3 { font-family: 'Oswald', sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 0.01em; margin: 0 0 4px; }
+  .meta { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 8px; }
   .meta span:not(:last-child)::after { content: ' · '; }
   .desc { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; min-height: 18px; }
 
-  .stock {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    margin-bottom: 12px;
-  }
-  .stock.low { color: var(--danger); }
+  .maten-lijst { font-family: 'Space Mono', monospace; font-size: 12px; margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .maten-lijst span { padding: 3px 8px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink-soft); }
+  .maten-lijst span.laag { color: var(--danger); border-color: var(--danger); }
+  .maten-lijst span.op { text-decoration: line-through; opacity: 0.5; }
 
-  .btn {
-    width: 100%;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1.5px solid var(--accent);
-    background: var(--accent);
-    color: #fff;
-    font-family: 'Work Sans', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
+  .btn { width: 100%; padding: 10px; border-radius: 20px; border: 1.5px solid var(--accent); background: var(--accent); color: #fff; font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
   .btn:hover { background: #fff; color: var(--accent); }
-  .btn:disabled {
-    background: var(--line); border-color: var(--line);
-    color: var(--ink-soft); cursor: not-allowed;
-  }
+  .btn:disabled { background: var(--line); border-color: var(--line); color: var(--ink-soft); cursor: not-allowed; }
   .btn.secondary { background: var(--card); color: var(--ink); border-color: var(--ink); }
   .btn.secondary:hover { background: var(--ink); color: var(--card); border-color: var(--ink); }
   .btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
@@ -215,102 +88,51 @@
   .empty { text-align: center; padding: 60px 20px; color: var(--fg-soft); }
 
   /* Admin */
-  .admin-panel {
-    background: var(--card);
-    border: 1.5px solid var(--danger);
-    border-radius: 8px;
-    padding: 18px;
-    margin: 20px 0;
-  }
-  .admin-panel h2 {
-    font-family: 'Oswald', sans-serif;
-    text-transform: uppercase;
-    color: var(--danger);
-    font-size: 16px;
-    margin-top: 0;
-  }
-  .admin-panel form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .admin-panel input {
-    font-family: 'Work Sans', sans-serif;
-    padding: 9px 10px;
-    border: 1.5px solid var(--line);
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  .admin-panel input.full { grid-column: 1 / -1; }
-  .admin-badge {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 10px;
-    background: var(--danger);
-    color: #fff;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-  .res-row {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 13px;
-  }
+  .admin-panel { background: var(--card); border: 1.5px solid var(--danger); border-radius: 8px; padding: 18px; margin: 20px 0; }
+  .admin-panel h2 { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: var(--danger); font-size: 16px; margin-top: 0; }
+  .admin-panel form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .admin-panel input, .admin-panel select { font-family: 'Work Sans', sans-serif; padding: 9px 10px; border: 1.5px solid var(--line); border-radius: 6px; font-size: 14px; }
+  .admin-panel input.full, .admin-panel select.full { grid-column: 1 / -1; }
+  .admin-badge { display: inline-block; font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 10px; background: var(--danger); color: #fff; margin-left: 8px; vertical-align: middle; }
+
+  .res-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
   .res-row:last-child { border-bottom: none; }
   .res-row .res-info strong { display: block; font-size: 13.5px; }
   .res-row .res-info span { color: var(--ink-soft); font-size: 12.5px; }
-  .res-row button {
-    flex-shrink: 0; padding: 6px 14px; border-radius: 16px; font-size: 12px;
-    border: 1.5px solid var(--ink); background: var(--card); color: var(--ink); cursor: pointer;
-  }
-  .res-row button:hover { background: var(--ink); color: #fff; }
+  .res-row button, .stock-variant-row button { flex-shrink: 0; padding: 6px 14px; border-radius: 16px; font-size: 12px; border: 1.5px solid var(--ink); background: var(--card); color: var(--ink); cursor: pointer; }
+  .res-row button:hover, .stock-variant-row button:hover { background: var(--ink); color: #fff; }
   .res-empty { font-size: 13px; color: var(--ink-soft); padding: 6px 0; }
 
+  .stock-item { border-bottom: 1px solid var(--line); padding: 12px 0; }
+  .stock-item:last-child { border-bottom: none; }
+  .stock-item-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .stock-item-header strong { font-size: 14px; }
+  .stock-item-header .mini-meta { font-size: 12px; color: var(--ink-soft); }
+  .stock-variant-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; padding: 5px 0; }
+  .stock-variant-row .variant-label { min-width: 130px; }
+  .stock-variant-row input[type="number"] { width: 70px; padding: 5px 7px; border: 1.5px solid var(--line); border-radius: 6px; font-size: 13px; }
+  .btn-mini-danger { border-color: var(--danger) !important; color: var(--danger) !important; }
+  .btn-mini-danger:hover { background: var(--danger) !important; color: #fff !important; }
+
   /* Modal */
-  .overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.65);
-    align-items: center; justify-content: center;
-    padding: 20px;
-    z-index: 100;
-  }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); align-items: center; justify-content: center; padding: 20px; z-index: 100; }
   .overlay.open { display: flex; }
-  .modal {
-    background: var(--card);
-    border-radius: 10px;
-    padding: 22px;
-    width: 100%; max-width: 340px;
-  }
+  .modal { background: var(--card); border-radius: 10px; padding: 22px; width: 100%; max-width: 340px; }
   .modal h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; margin-top: 0; }
   .modal label { display: block; font-size: 13px; color: var(--ink-soft); margin: 12px 0 4px; }
-  .modal select, .modal input {
-    width: 100%; padding: 9px 10px; border: 1.5px solid var(--line);
-    border-radius: 6px; font-size: 14px; font-family: 'Work Sans', sans-serif;
-  }
+  .modal select, .modal input { width: 100%; padding: 9px 10px; border: 1.5px solid var(--line); border-radius: 6px; font-size: 14px; font-family: 'Work Sans', sans-serif; }
   .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
   .modal-actions .btn { flex: 1; }
-  .toast {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: var(--ink); color: #fff;
-    padding: 12px 20px; border-radius: 20px; font-size: 14px;
-    z-index: 200; opacity: 0; transition: opacity 0.2s ease;
-  }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 20px; font-size: 14px; z-index: 200; opacity: 0; transition: opacity 0.2s ease; }
   .toast.show { opacity: 1; }
   .toast.error { background: var(--danger); }
 
   /* Afdrukoverzicht */
   #printArea { display: none; }
-  #printArea h1 {
-    font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 22px; margin-bottom: 4px;
-  }
+  #printArea h1 { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 22px; margin-bottom: 4px; }
   #printArea p { font-size: 12px; color: var(--ink-soft); margin-top: 0; }
   #printTable { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px; }
-  #printTable th, #printTable td {
-    text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line);
-  }
+  #printTable th, #printTable td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
   #printTable th { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
   #printTable tr.new-teacher td { border-top: 2px solid var(--ink); }
 
@@ -322,16 +144,20 @@
 </head>
 <body>
 
-<div id="adminBox">
-  <button id="adminToggleBtn" type="button">Beheerder aanmelden</button>
-</div>
-
 <header>
   <img src="logo.jpg" alt="FLEX Dansschool Ninove - Denderhoutem" class="logo">
   <p class="eyebrow">Flex · Voorraad achter de schermen</p>
   <h1>Kostuumdepot</h1>
   <p class="sub">Bekijk wat er in de garagebox zit, filter op type, kleur of maat, en reserveer voor de volgende show.</p>
+  <div id="adminBox">
+    <button id="adminToggleBtn" type="button">Beheerder aanmelden</button>
+  </div>
 </header>
+
+<div class="vestiging-bar">
+  <button id="btnNinove" data-vestiging="Ninove" class="active">Ninove</button>
+  <button id="btnDenderhoutem" data-vestiging="Denderhoutem">Denderhoutem</button>
+</div>
 
 <div class="rail">
   <select id="filterType"><option value="">Alle types</option></select>
@@ -344,12 +170,24 @@
   <div id="emptyState" class="empty" style="display:none;">Geen items gevonden met deze filters.</div>
 
   <div id="adminPanel" class="admin-panel" style="display:none;">
-    <h2>Openstaande reservaties <span class="admin-badge">beheerder</span></h2>
-    <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Breng een specifieke reservatie afzonderlijk terug, of druk het volledige overzicht af.</p>
+    <h2>Openstaande reservaties <span class="admin-badge" id="adminVestigingLabel">Ninove</span></h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Breng een specifieke reservatie afzonderlijk terug, of druk het overzicht van deze vestiging af.</p>
     <div id="adminReservationsList"></div>
-    <button type="button" class="btn secondary" id="printOverviewBtn" style="margin-top:12px;">Overzicht afdrukken</button>
+    <button type="button" class="btn secondary" id="printOverviewBtn" style="margin-top:12px;">Overzicht afdrukken (huidige vestiging)</button>
 
-    <h2 style="margin-top:24px;">Nieuw item toevoegen</h2>
+    <h2 style="margin-top:26px;">Voorraad beheren</h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Verminder de voorraad bij slijtage, of verwijder een maat of een volledig item.</p>
+    <div id="stockManageList"></div>
+
+    <h2 style="margin-top:26px;">Maat toevoegen aan bestaand item</h2>
+    <form id="addVariantForm">
+      <select name="itemId" class="full" required><option value="">Kies een item…</option></select>
+      <input type="text" name="maat" placeholder="Maat (bv. XL)">
+      <input type="number" name="totaalAantal" placeholder="Aantal" min="1" required>
+      <button type="submit" class="btn full" style="grid-column:1/-1;">Maat toevoegen</button>
+    </form>
+
+    <h2 style="margin-top:26px;">Nieuw item toevoegen</h2>
     <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">Plak bij foto gerust gewoon de gewone Drive-deellink — die wordt automatisch omgezet naar de juiste vorm.</p>
     <form id="addItemForm">
       <input type="text" name="naam" placeholder="Naam (bv. Zwarte broek jazz)" required>
@@ -368,9 +206,7 @@
   <h1 id="printTitle">Overzicht openstaande reservaties</h1>
   <p id="printDate"></p>
   <table id="printTable">
-    <thead>
-      <tr><th>Leerkracht</th><th>Item</th><th>Maat</th><th>Kleur</th><th>Type</th><th>Aantal</th><th>Sinds</th></tr>
-    </thead>
+    <thead><tr><th>Leerkracht</th><th>Item</th><th>Maat</th><th>Aantal</th><th>Sinds</th></tr></thead>
     <tbody id="printTableBody"></tbody>
   </table>
 </div>
@@ -378,6 +214,8 @@
 <div class="overlay" id="reserveOverlay">
   <div class="modal">
     <h3 id="reserveTitle">Reserveren</h3>
+    <label for="reserveMaat">Maat</label>
+    <select id="reserveMaat"></select>
     <label for="reserveTeacher">Jouw naam</label>
     <select id="reserveTeacher"></select>
     <label for="reserveAantal">Aantal</label>
@@ -393,13 +231,13 @@
 
 <script>
   // ==== CONFIGURATIE ====
-  // Plak hier de webapp-URL die je krijgt na het implementeren van Code.gs
   const API_URL = 'https://script.google.com/macros/s/AKfycbz4Ur_FAdXm5clwTRzkx_EaUPqM5D7D62pVL4Qtf10yyydUO1LIi9cPqcsQqJ-rOMwd/exec';
 
   let items = [];
   let teachers = [];
   let isAdmin = false;
-  let currentReserveItem = null;
+  let currentItem = null;
+  let currentVestiging = localStorage.getItem('kostuum_vestiging') || 'Ninove';
 
   const grid = document.getElementById('grid');
   const emptyState = document.getElementById('emptyState');
@@ -407,8 +245,25 @@
   const filterKleur = document.getElementById('filterKleur');
   const filterMaat = document.getElementById('filterMaat');
 
+  // ==== VESTIGING WISSELEN ====
+  function updateVestigingKnoppen() {
+    document.getElementById('btnNinove').classList.toggle('active', currentVestiging === 'Ninove');
+    document.getElementById('btnDenderhoutem').classList.toggle('active', currentVestiging === 'Denderhoutem');
+    document.getElementById('adminVestigingLabel').textContent = currentVestiging;
+  }
+  function kiesVestiging(v) {
+    currentVestiging = v;
+    localStorage.setItem('kostuum_vestiging', v);
+    updateVestigingKnoppen();
+    render();
+    if (isAdmin) loadAdminReservations();
+  }
+  document.getElementById('btnNinove').addEventListener('click', () => kiesVestiging('Ninove'));
+  document.getElementById('btnDenderhoutem').addEventListener('click', () => kiesVestiging('Denderhoutem'));
+  updateVestigingKnoppen();
+
+  // ==== LADEN (met snelle weergave via lokale cache) ====
   async function loadItems() {
-    // Toon meteen de laatst gekende lijst (indien aanwezig) terwijl er op de achtergrond ververst wordt
     const cachedRaw = localStorage.getItem('kostuum_items_cache');
     let hadCache = false;
     if (cachedRaw) {
@@ -426,7 +281,6 @@
       emptyState.style.display = 'block';
       emptyState.textContent = 'Bezig met laden…';
     }
-
     try {
       const res = await fetch(API_URL + '?action=list');
       const data = await res.json();
@@ -449,7 +303,7 @@
   function populateFilters() {
     const types = [...new Set(items.map(i => i.Type).filter(Boolean))].sort();
     const kleuren = [...new Set(items.map(i => i.Kleur).filter(Boolean))].sort();
-    const maten = [...new Set(items.map(i => i.Maat).filter(Boolean))].sort();
+    const maten = [...new Set(items.flatMap(i => i.Varianten.map(v => v.Maat)).filter(Boolean))].sort();
     filterType.innerHTML = '<option value="">Alle types</option>' + types.map(t => `<option value="${t}">${t}</option>`).join('');
     filterKleur.innerHTML = '<option value="">Alle kleuren</option>' + kleuren.map(k => `<option value="${k}">${k}</option>`).join('');
     filterMaat.innerHTML = '<option value="">Alle maten</option>' + maten.map(m => `<option value="${m}">${m}</option>`).join('');
@@ -462,46 +316,57 @@
     if (remembered && teachers.includes(remembered)) select.value = remembered;
   }
 
+  // ==== WEERGAVE ====
+  function beschikbaarVeld() { return 'Beschikbaar' + currentVestiging; }
+
   function render() {
     const typeVal = filterType.value;
     const kleurVal = filterKleur.value;
     const maatVal = filterMaat.value;
+    const veld = beschikbaarVeld();
 
     const filtered = items.filter(i => {
       if (typeVal && i.Type !== typeVal) return false;
       if (kleurVal && i.Kleur !== kleurVal) return false;
-      if (maatVal && i.Maat !== maatVal) return false;
+      if (maatVal && !i.Varianten.some(v => v.Maat === maatVal)) return false;
       return true;
     });
 
     if (filtered.length === 0) {
       grid.innerHTML = '';
       emptyState.style.display = 'block';
+      emptyState.textContent = 'Geen items gevonden met deze filters.';
       return;
     }
     emptyState.style.display = 'none';
 
     grid.innerHTML = filtered.map(i => {
-      const beschikbaar = Number(i.BeschikbaarAantal);
-      const totaal = Number(i.TotaalAantal);
-      const laag = totaal > 0 && beschikbaar / totaal <= 0.2;
-      const uitverkocht = beschikbaar <= 0;
+      const totaalBeschikbaar = i.Varianten.reduce((som, v) => som + v[veld], 0);
+      const uitverkocht = totaalBeschikbaar <= 0;
       const imgHtml = i.FotoURL
         ? `<img src="${i.FotoURL}" alt="${i.Naam}" loading="lazy">`
         : `<div class="noimg">Geen foto</div>`;
+
+      const matenHtml = i.Varianten.map(v => {
+        const beschikbaar = v[veld];
+        const op = beschikbaar <= 0;
+        const laag = !op && v.TotaalAantal > 0 && beschikbaar / v.TotaalAantal <= 0.2;
+        const label = v.Maat || 'Eenheidsmaat';
+        return `<span class="${op ? 'op' : ''} ${laag ? 'laag' : ''}">${label}: ${beschikbaar}/${v.TotaalAantal}</span>`;
+      }).join('');
 
       return `
         <div class="tag">
           <div class="tag-id">${i.ID}</div>
           ${imgHtml}
           <h3>${i.Naam}</h3>
-          <div class="meta"><span>${i.Type || '—'}</span><span>${i.Kleur || '—'}</span>${i.Maat ? `<span>Maat ${i.Maat}</span>` : ''}</div>
+          <div class="meta"><span>${i.Type || '—'}</span><span>${i.Kleur || '—'}</span></div>
           ${i.Beschrijving ? `<div class="desc">${i.Beschrijving}</div>` : ''}
-          <div class="stock ${laag ? 'low' : ''}">${beschikbaar} van ${totaal} beschikbaar</div>
+          <div class="maten-lijst">${matenHtml}</div>
           <button class="btn" ${uitverkocht ? 'disabled' : ''} onclick="openReserve('${i.ID}')">
-            ${uitverkocht ? 'Volledig gereserveerd' : 'Reserveren'}
+            ${uitverkocht ? 'Volledig gereserveerd (' + currentVestiging + ')' : 'Reserveren'}
           </button>
-          ${isAdmin ? `<button class="btn danger" style="margin-top:8px;" onclick="adminReset('${i.ID}')">Volledig terug openzetten</button>` : ''}
+          ${isAdmin ? `<button class="btn danger" style="margin-top:8px;" onclick="adminReset('${i.ID}')">Volledig terug openzetten (${currentVestiging})</button>` : ''}
         </div>
       `;
     }).join('');
@@ -513,10 +378,22 @@
 
   // ==== RESERVEREN ====
   function openReserve(itemId) {
-    currentReserveItem = items.find(i => i.ID === itemId);
-    document.getElementById('reserveTitle').textContent = 'Reserveren — ' + currentReserveItem.Naam + (currentReserveItem.Maat ? ' (maat ' + currentReserveItem.Maat + ')' : '');
-    document.getElementById('reserveAantal').max = currentReserveItem.BeschikbaarAantal;
-    document.getElementById('reserveAantal').value = 1;
+    currentItem = items.find(i => i.ID === itemId);
+    const veld = beschikbaarVeld();
+    document.getElementById('reserveTitle').textContent = 'Reserveren — ' + currentItem.Naam + ' (' + currentVestiging + ')';
+
+    const maatSelect = document.getElementById('reserveMaat');
+    const beschikbareVarianten = currentItem.Varianten.filter(v => v[veld] > 0);
+    maatSelect.innerHTML = beschikbareVarianten.map(v =>
+      `<option value="${v.VariantID}" data-max="${v[veld]}">${v.Maat || 'Eenheidsmaat'} (${v[veld]} beschikbaar)</option>`
+    ).join('');
+    maatSelect.onchange = () => {
+      const optie = maatSelect.selectedOptions[0];
+      document.getElementById('reserveAantal').max = optie ? optie.dataset.max : 1;
+      document.getElementById('reserveAantal').value = 1;
+    };
+    maatSelect.onchange();
+
     document.getElementById('reserveOverlay').classList.add('open');
   }
   document.getElementById('reserveCancel').addEventListener('click', () => {
@@ -525,6 +402,8 @@
   document.getElementById('reserveConfirm').addEventListener('click', async () => {
     const naam = document.getElementById('reserveTeacher').value;
     const aantal = Number(document.getElementById('reserveAantal').value);
+    const variantId = document.getElementById('reserveMaat').value;
+    if (!variantId) { showToast('Geen maat beschikbaar om te reserveren.', true); return; }
     if (!naam) { showToast('Kies je naam.', true); return; }
     if (!aantal || aantal < 1) { showToast('Vul een geldig aantal in.', true); return; }
 
@@ -534,14 +413,15 @@
     knop.textContent = 'Bezig…';
 
     try {
-      const res = await postAction({ action: 'reserve', itemId: currentReserveItem.ID, naam, aantal });
+      const res = await postAction({ action: 'reserve', variantId, vestiging: currentVestiging, naam, aantal });
       if (res.success) {
         localStorage.setItem('kostuum_leerkracht', naam);
         items = res.items;
+        localStorage.setItem('kostuum_items_cache', JSON.stringify({ items, teachers }));
         populateFilters();
         render();
         document.getElementById('reserveOverlay').classList.remove('open');
-        showToast('Gereserveerd voor ' + naam + '.');
+        showToast('Gereserveerd voor ' + naam + ' (' + currentVestiging + ').');
       } else {
         showToast(res.error, true);
       }
@@ -551,7 +431,7 @@
     }
   });
 
-  // ==== BEHEERDER ====
+  // ==== BEHEERDER: aan- en afmelden ====
   document.getElementById('adminToggleBtn').addEventListener('click', () => {
     if (isAdmin) {
       isAdmin = false;
@@ -567,17 +447,20 @@
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('adminToggleBtn').textContent = 'Beheerder afmelden';
     loadAdminReservations();
+    renderStockManageList();
+    populateItemSelect();
     render();
   });
 
+  // ==== BEHEERDER: reservaties ====
   async function adminReset(itemId) {
-    if (!confirm('Dit item volledig terug openzetten (alle reservaties van dit item wissen)?')) return;
-    const res = await postAction({ action: 'adminReset', itemId, password: window.__adminPassword });
+    if (!confirm('Dit item volledig terug openzetten in ' + currentVestiging + ' (alle reservaties van dit item in deze vestiging wissen)?')) return;
+    const res = await postAction({ action: 'adminReset', itemId, vestiging: currentVestiging, password: window.__adminPassword });
     if (res.success) {
       items = res.items;
       render();
       loadAdminReservations();
-      showToast('Item terug volledig beschikbaar.');
+      showToast('Item terug volledig beschikbaar in ' + currentVestiging + '.');
     } else {
       showToast(res.error, true);
     }
@@ -586,20 +469,14 @@
   async function loadAdminReservations() {
     const container = document.getElementById('adminReservationsList');
     container.innerHTML = '<p class="res-empty">Bezig met laden…</p>';
-    const res = await postAction({ action: 'adminActiveReservations', password: window.__adminPassword });
-    if (!res.success) {
-      container.innerHTML = `<p class="res-empty">${res.error}</p>`;
-      return;
-    }
-    if (res.reservations.length === 0) {
-      container.innerHTML = '<p class="res-empty">Geen openstaande reservaties.</p>';
-      return;
-    }
+    const res = await postAction({ action: 'adminActiveReservations', vestiging: currentVestiging, password: window.__adminPassword });
+    if (!res.success) { container.innerHTML = `<p class="res-empty">${res.error}</p>`; return; }
+    if (res.reservations.length === 0) { container.innerHTML = '<p class="res-empty">Geen openstaande reservaties in ' + currentVestiging + '.</p>'; return; }
     container.innerHTML = res.reservations.map(r => `
       <div class="res-row">
         <div class="res-info">
           <strong>${r.leerkracht}</strong>
-          <span>${r.aantal}× ${r.itemNaam} — sinds ${r.datum}</span>
+          <span>${r.aantal}× ${r.itemNaam}${r.maat ? ' (maat ' + r.maat + ')' : ''} — sinds ${r.datum}</span>
         </div>
         <button type="button" onclick="returnOneReservation(${r.rij})">Terugbrengen</button>
       </div>
@@ -619,6 +496,106 @@
     }
   }
 
+  // ==== BEHEERDER: voorraad beheren (verminderen / verwijderen) ====
+  function renderStockManageList() {
+    const container = document.getElementById('stockManageList');
+    if (items.length === 0) { container.innerHTML = '<p class="res-empty">Nog geen items.</p>'; return; }
+    container.innerHTML = items.map(i => `
+      <div class="stock-item">
+        <div class="stock-item-header">
+          <div><strong>${i.Naam}</strong> <span class="mini-meta">(${i.Type || '—'} · ${i.Kleur || '—'})</span></div>
+          <button type="button" class="btn-mini-danger" onclick="deleteItem('${i.ID}', '${i.Naam.replace(/'/g, "\\'")}')">Verwijder volledig item</button>
+        </div>
+        ${i.Varianten.map(v => `
+          <div class="stock-variant-row">
+            <span class="variant-label">${v.Maat || 'Eenheidsmaat'} — totaal ${v.TotaalAantal}</span>
+            <input type="number" min="1" placeholder="aantal" id="verminder-${v.VariantID}">
+            <button type="button" onclick="adjustStock('${v.VariantID}')">Verminder</button>
+            <button type="button" class="btn-mini-danger" onclick="deleteVariant('${v.VariantID}', '${(v.Maat || 'deze maat').replace(/'/g, "\\'")}')">Verwijder deze maat</button>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  }
+
+  async function adjustStock(variantId) {
+    const input = document.getElementById('verminder-' + variantId);
+    const verminderMet = Number(input.value);
+    if (!verminderMet || verminderMet <= 0) { showToast('Vul een geldig aantal in om te verminderen.', true); return; }
+    if (!confirm('Voorraad verminderen met ' + verminderMet + ' stuk(s)? Dit geldt voor beide vestigingen samen.')) return;
+    const res = await postAction({ action: 'adminAdjustStock', variantId, verminderMet, password: window.__adminPassword });
+    if (res.success) {
+      items = res.items;
+      populateFilters();
+      render();
+      renderStockManageList();
+      populateItemSelect();
+      showToast('Voorraad aangepast.');
+    } else {
+      showToast(res.error, true);
+    }
+  }
+
+  async function deleteVariant(variantId, label) {
+    if (!confirm('Maat "' + label + '" volledig verwijderen? Dit kan niet ongedaan gemaakt worden.')) return;
+    const res = await postAction({ action: 'adminDeleteVariant', variantId, password: window.__adminPassword });
+    if (res.success) {
+      items = res.items;
+      populateFilters();
+      render();
+      renderStockManageList();
+      populateItemSelect();
+      showToast('Maat verwijderd.');
+    } else {
+      showToast(res.error, true);
+    }
+  }
+
+  async function deleteItem(itemId, naam) {
+    if (!confirm('Item "' + naam + '" volledig verwijderen, met alle maten? Dit kan niet ongedaan gemaakt worden.')) return;
+    const res = await postAction({ action: 'adminDeleteItem', itemId, password: window.__adminPassword });
+    if (res.success) {
+      items = res.items;
+      populateFilters();
+      render();
+      renderStockManageList();
+      populateItemSelect();
+      showToast('Item verwijderd.');
+    } else {
+      showToast(res.error, true);
+    }
+  }
+
+  // ==== BEHEERDER: maat toevoegen aan bestaand item ====
+  function populateItemSelect() {
+    const select = document.querySelector('#addVariantForm select[name="itemId"]');
+    select.innerHTML = '<option value="">Kies een item…</option>' +
+      items.map(i => `<option value="${i.ID}">${i.Naam} (${i.Type || '—'})</option>`).join('');
+  }
+
+  document.getElementById('addVariantForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const res = await postAction({
+      action: 'adminAddVariant',
+      password: window.__adminPassword,
+      itemId: form.itemId.value,
+      maat: form.maat.value,
+      totaalAantal: form.totaalAantal.value
+    });
+    if (res.success) {
+      items = res.items;
+      populateFilters();
+      render();
+      renderStockManageList();
+      form.reset();
+      showToast('Maat toegevoegd.');
+    } else {
+      showToast(res.error, true);
+    }
+  });
+
+  // ==== BEHEERDER: nieuw item toevoegen ====
   document.getElementById('addItemForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -638,6 +615,8 @@
       items = res.items;
       populateFilters();
       render();
+      renderStockManageList();
+      populateItemSelect();
       form.reset();
       showToast('Item toegevoegd.');
     } else {
@@ -654,25 +633,21 @@
     let match = trimmed.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
     if (!match) match = trimmed.match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
     if (!match) {
-      if (/^[a-zA-Z0-9_-]{15,}$/.test(trimmed)) {
-        return `https://drive.google.com/thumbnail?id=${trimmed}&sz=w600`;
-      }
-      return trimmed; // geen Drive-link herkend: ongewijzigd gebruiken (bv. andere fotohost)
+      if (/^[a-zA-Z0-9_-]{15,}$/.test(trimmed)) return `https://drive.google.com/thumbnail?id=${trimmed}&sz=w600`;
+      return trimmed;
     }
     return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w600`;
   }
 
+  // ==== AFDRUKOVERZICHT ====
   document.getElementById('printOverviewBtn').addEventListener('click', printOverview);
 
   async function printOverview() {
-    const res = await postAction({ action: 'adminOverview', password: window.__adminPassword });
+    const res = await postAction({ action: 'adminOverview', vestiging: currentVestiging, password: window.__adminPassword });
     if (!res.success) { showToast(res.error, true); return; }
+    if (res.overview.length === 0) { showToast('Geen openstaande reservaties in ' + currentVestiging + '.', true); return; }
 
-    if (res.overview.length === 0) {
-      showToast('Er zijn momenteel geen openstaande reservaties.', true);
-      return;
-    }
-
+    document.getElementById('printTitle').textContent = 'Overzicht openstaande reservaties — ' + currentVestiging;
     document.getElementById('printDate').textContent = 'Afgedrukt op ' + new Date().toLocaleDateString('nl-BE');
 
     let lastLeerkracht = null;
@@ -684,8 +659,6 @@
           <td>${nieuweGroep ? r.Leerkracht : ''}</td>
           <td>${r.Item}</td>
           <td>${r.Maat}</td>
-          <td>${r.Kleur}</td>
-          <td>${r.Type}</td>
           <td>${r.Aantal}</td>
           <td>${r.Datum}</td>
         </tr>`;
@@ -695,10 +668,7 @@
     document.body.classList.add('printing');
     window.print();
   }
-
-  window.addEventListener('afterprint', () => {
-    document.body.classList.remove('printing');
-  });
+  window.addEventListener('afterprint', () => document.body.classList.remove('printing'));
 
   // ==== HULPFUNCTIES ====
   async function postAction(payload) {
