@@ -160,6 +160,11 @@
 </div>
 
 <div class="rail">
+  <select id="filterCategorie">
+    <option value="">Kind & volwassene</option>
+    <option value="Kind">Kind</option>
+    <option value="Volwassene">Volwassene</option>
+  </select>
   <select id="filterType"><option value="">Alle types</option></select>
   <select id="filterKleur"><option value="">Alle kleuren</option></select>
   <select id="filterMaat"><option value="">Alle maten</option></select>
@@ -193,6 +198,11 @@
       <input type="text" name="naam" placeholder="Naam (bv. Zwarte broek jazz)" required>
       <input type="text" name="type" placeholder="Type (bv. Broek)" required>
       <input type="text" name="kleur" placeholder="Kleur (bv. Zwart)">
+      <select name="categorie" required>
+        <option value="">Kind of volwassene?</option>
+        <option value="Kind">Kind</option>
+        <option value="Volwassene">Volwassene</option>
+      </select>
       <input type="text" name="maat" placeholder="Maat (bv. M, 152, 42)">
       <input type="number" name="totaalAantal" placeholder="Aantal" min="1" required>
       <input type="text" name="fotoURL" placeholder="Link naar foto (Google Drive)" class="full">
@@ -241,6 +251,7 @@
 
   const grid = document.getElementById('grid');
   const emptyState = document.getElementById('emptyState');
+  const filterCategorie = document.getElementById('filterCategorie');
   const filterType = document.getElementById('filterType');
   const filterKleur = document.getElementById('filterKleur');
   const filterMaat = document.getElementById('filterMaat');
@@ -320,12 +331,14 @@
   function beschikbaarVeld() { return 'Beschikbaar' + currentVestiging; }
 
   function render() {
+    const categorieVal = filterCategorie.value;
     const typeVal = filterType.value;
     const kleurVal = filterKleur.value;
     const maatVal = filterMaat.value;
     const veld = beschikbaarVeld();
 
     const filtered = items.filter(i => {
+      if (categorieVal && i.Categorie !== categorieVal) return false;
       if (typeVal && i.Type !== typeVal) return false;
       if (kleurVal && i.Kleur !== kleurVal) return false;
       if (maatVal && !i.Varianten.some(v => v.Maat === maatVal)) return false;
@@ -360,7 +373,7 @@
           <div class="tag-id">${i.ID}</div>
           ${imgHtml}
           <h3>${i.Naam}</h3>
-          <div class="meta"><span>${i.Type || '—'}</span><span>${i.Kleur || '—'}</span></div>
+          <div class="meta"><span>${i.Categorie || '—'}</span><span>${i.Type || '—'}</span><span>${i.Kleur || '—'}</span></div>
           ${i.Beschrijving ? `<div class="desc">${i.Beschrijving}</div>` : ''}
           <div class="maten-lijst">${matenHtml}</div>
           <button class="btn" ${uitverkocht ? 'disabled' : ''} onclick="openReserve('${i.ID}')">
@@ -372,6 +385,7 @@
     }).join('');
   }
 
+  filterCategorie.addEventListener('change', render);
   filterType.addEventListener('change', render);
   filterKleur.addEventListener('change', render);
   filterMaat.addEventListener('change', render);
@@ -605,6 +619,7 @@
       naam: form.naam.value,
       type: form.type.value,
       kleur: form.kleur.value,
+      categorie: form.categorie.value,
       maat: form.maat.value,
       totaalAantal: form.totaalAantal.value,
       fotoURL: normalizeDriveUrl(form.fotoURL.value),
