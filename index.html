@@ -165,6 +165,14 @@
     <option value="Kind">Kind</option>
     <option value="Volwassene">Volwassene</option>
   </select>
+  <select id="filterKledingsoort">
+    <option value="">Alle kledingsoorten</option>
+    <option value="Onderstukken">Onderstukken</option>
+    <option value="Bovenstukken">Bovenstukken</option>
+    <option value="Volledige outfit">Volledige outfit</option>
+    <option value="Accessoires">Accessoires</option>
+    <option value="Pruiken">Pruiken</option>
+  </select>
   <select id="filterType"><option value="">Alle types</option></select>
   <select id="filterKleur"><option value="">Alle kleuren</option></select>
   <select id="filterMaat"><option value="">Alle maten</option></select>
@@ -202,6 +210,14 @@
         <option value="">Kind of volwassene?</option>
         <option value="Kind">Kind</option>
         <option value="Volwassene">Volwassene</option>
+      </select>
+      <select name="kledingsoort" required>
+        <option value="">Kledingsoort…</option>
+        <option value="Onderstukken">Onderstukken</option>
+        <option value="Bovenstukken">Bovenstukken</option>
+        <option value="Volledige outfit">Volledige outfit</option>
+        <option value="Accessoires">Accessoires</option>
+        <option value="Pruiken">Pruiken</option>
       </select>
       <input type="text" name="maat" placeholder="Maat (bv. M, 152, 42)">
       <input type="number" name="totaalAantal" placeholder="Aantal" min="1" required>
@@ -252,6 +268,7 @@
   const grid = document.getElementById('grid');
   const emptyState = document.getElementById('emptyState');
   const filterCategorie = document.getElementById('filterCategorie');
+  const filterKledingsoort = document.getElementById('filterKledingsoort');
   const filterType = document.getElementById('filterType');
   const filterKleur = document.getElementById('filterKleur');
   const filterMaat = document.getElementById('filterMaat');
@@ -332,6 +349,7 @@
 
   function render() {
     const categorieVal = filterCategorie.value;
+    const kledingsoortVal = filterKledingsoort.value;
     const typeVal = filterType.value;
     const kleurVal = filterKleur.value;
     const maatVal = filterMaat.value;
@@ -339,6 +357,7 @@
 
     const filtered = items.filter(i => {
       if (categorieVal && i.Categorie !== categorieVal) return false;
+      if (kledingsoortVal && i.Kledingsoort !== kledingsoortVal) return false;
       if (typeVal && i.Type !== typeVal) return false;
       if (kleurVal && i.Kleur !== kleurVal) return false;
       if (maatVal && !i.Varianten.some(v => v.Maat === maatVal)) return false;
@@ -373,7 +392,7 @@
           <div class="tag-id">${i.ID}</div>
           ${imgHtml}
           <h3>${i.Naam}</h3>
-          <div class="meta"><span>${i.Categorie || '—'}</span><span>${i.Type || '—'}</span><span>${i.Kleur || '—'}</span></div>
+          <div class="meta"><span>${i.Categorie || '—'}</span><span>${i.Kledingsoort || '—'}</span><span>${i.Type || '—'}</span><span>${i.Kleur || '—'}</span></div>
           ${i.Beschrijving ? `<div class="desc">${i.Beschrijving}</div>` : ''}
           <div class="maten-lijst">${matenHtml}</div>
           <button class="btn" ${uitverkocht ? 'disabled' : ''} onclick="openReserve('${i.ID}')">
@@ -386,6 +405,7 @@
   }
 
   filterCategorie.addEventListener('change', render);
+  filterKledingsoort.addEventListener('change', render);
   filterType.addEventListener('change', render);
   filterKleur.addEventListener('change', render);
   filterMaat.addEventListener('change', render);
@@ -523,8 +543,9 @@
         ${i.Varianten.map(v => `
           <div class="stock-variant-row">
             <span class="variant-label">${v.Maat || 'Eenheidsmaat'} — totaal ${v.TotaalAantal}</span>
-            <input type="number" min="1" placeholder="aantal" id="verminder-${v.VariantID}">
-            <button type="button" onclick="adjustStock('${v.VariantID}')">Verminder</button>
+            <input type="number" min="1" placeholder="aantal" id="wijzig-${v.VariantID}">
+            <button type="button" onclick="adjustStock('${v.VariantID}', 1)">Verhogen</button>
+            <button type="button" class="btn-mini-danger" onclick="adjustStock('${v.VariantID}', -1)">Verminderen</button>
             <button type="button" class="btn-mini-danger" onclick="deleteVariant('${v.VariantID}', '${(v.Maat || 'deze maat').replace(/'/g, "\\'")}')">Verwijder deze maat</button>
           </div>
         `).join('')}
@@ -532,18 +553,21 @@
     `).join('');
   }
 
-  async function adjustStock(variantId) {
-    const input = document.getElementById('verminder-' + variantId);
-    const verminderMet = Number(input.value);
-    if (!verminderMet || verminderMet <= 0) { showToast('Vul een geldig aantal in om te verminderen.', true); return; }
-    if (!confirm('Voorraad verminderen met ' + verminderMet + ' stuk(s)? Dit geldt voor beide vestigingen samen.')) return;
-    const res = await postAction({ action: 'adminAdjustStock', variantId, verminderMet, password: window.__adminPassword });
+  async function adjustStock(variantId, richting) {
+    const input = document.getElementById('wijzig-' + variantId);
+    const aantal = Number(input.value);
+    if (!aantal || aantal <= 0) { showToast('Vul een geldig aantal in.', true); return; }
+    const wijziging = richting * aantal;
+    const werkwoord = richting > 0 ? 'verhogen' : 'verminderen';
+    if (!confirm('Voorraad ' + werkwoord + ' met ' + aantal + ' stuk(s)? Dit geldt voor beide vestigingen samen.')) return;
+    const res = await postAction({ action: 'adminAdjustStock', variantId, wijziging, password: window.__adminPassword });
     if (res.success) {
       items = res.items;
       populateFilters();
       render();
       renderStockManageList();
       populateItemSelect();
+      input.value = '';
       showToast('Voorraad aangepast.');
     } else {
       showToast(res.error, true);
@@ -620,6 +644,7 @@
       type: form.type.value,
       kleur: form.kleur.value,
       categorie: form.categorie.value,
+      kledingsoort: form.kledingsoort.value,
       maat: form.maat.value,
       totaalAantal: form.totaalAantal.value,
       fotoURL: normalizeDriveUrl(form.fotoURL.value),
